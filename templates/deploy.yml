@@ -10,6 +10,7 @@ parameters:
 - name: WebAppName
   default: ''
 
+
 stages:
 - stage: ${{ parameters.name }}
   displayName: ${{ parameters.displayName }}
