@@ -1,0 +1,36 @@
+parameters:
+- name: name  # defaults for any parameters that aren't specified
+  default: ''
+- name: displayName
+  default: ''
+- name: condition
+  default: ''
+- name: environment
+  default: dev
+- name: WebAppName
+  default: ''
+
+
+- stage: ${{ parameters.name }}
+  displayName: ${{ parameters.displayName }}
+  dependsOn: Build
+  condition: ${{ parameters.condition }}
+  jobs:
+  - deployment: Deploy
+    pool:
+      name: Default
+    environment: ${{ parameters.environment }}
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: website'
+            inputs:
+              azureSubscription: 'Resource Manager - Tailspin - Space Game'
+              appName: ${{ parameters.WebAppName }}
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
