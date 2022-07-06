@@ -3,7 +3,7 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
-  releaseBranchName: 'release'
+  releaseBranchName: 'use-template'
 
 schedules:
 - cron: '0 3 * * *'
